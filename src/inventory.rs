@@ -1,3 +1,4 @@
+
 use serde::{Deserialize, Serialize};
 use std::fs::File;
 use std::io::{Write, Read};
@@ -5,14 +6,14 @@ use std::io::{Write, Read};
 #[derive(Serialize, Deserialize, Debug, Clone)]
 
 pub struct Product {
-    name: String,
-    description: String,
-    price: f64,
-    quantity: u32,
+   pub name: String,
+   pub description: String,
+   pub  price: f64,
+   pub  quantity: u32,
 }
 impl Product {
     pub fn new(name: &str, description: &str, price: f64, quantity: u32) -> Self {
-        Product {
+       Product {
             name: name.to_string(),
             description: description.to_string(),
             price,
@@ -23,13 +24,27 @@ impl Product {
 use std::collections::HashMap;
 
 pub struct Inventory {
-    products: HashMap<String, Product>,
+   pub  products: HashMap<String, Product>,
 }
 
 impl Inventory {
     pub fn new() -> Self {
         Inventory {
             products: HashMap::new(),
+        }
+    }
+
+    // Method to retrieve a reference to a product if it exists
+    pub fn get_product(&self, name: &str) -> Option<&Product> {
+        self.products.get(name)
+    }
+
+    // Method to check if a product exists and has enough stock
+    pub fn has_stock(&self, name: &str, quantity: u32) -> bool {
+        if let Some(product) = self.get_product(name) {
+            product.quantity >= quantity
+        } else {
+            false
         }
     }
 
